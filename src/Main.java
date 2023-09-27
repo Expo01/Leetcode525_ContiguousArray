@@ -1,6 +1,30 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
+    }
+}
+
+
+// SOLUTION
+public class Solution {
+
+    public int findMaxLength(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>(); // stores count as key, index as value
+        map.put(0, -1); // this is important say length of 6, for below, when i 5, 5- -1 = 6.
+        int maxlen = 0, count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            count += (nums[i] == 1 ? 1 : -1); // ++ or -- count if 1 or 0 found
+            if (map.containsKey(count)) { // if count already found, means = number of 0's and 1's between past 'i'
+                // and currrent 'i'. say count is 3 at index 2, later count of 3 found again at index 6.
+                maxlen = Math.max(maxlen, i - map.get(count)); // then current len is 6-2 = 4. if 4>maxLen, reassign
+            } else { // new count only
+                map.put(count, i);
+            } // no rewriting of value to current index so store first time count x occured for longest length
+        }
+        return maxlen;
     }
 }
 
